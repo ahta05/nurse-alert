@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-import { getDatabase, ref, onValue, push } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+import { getDatabase, ref, onValue, push, remove } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
 
 // Config Firebase
 const firebaseConfig = {
@@ -30,6 +30,12 @@ document.getElementById('tab-history').onclick = () => {
 const activeList = document.getElementById('active-list');
 const handledList = document.getElementById('handled-list');
 const historyTable = document.getElementById('history-table');
+
+// Input & button untuk filter/hapus history
+const filterDateInput = document.getElementById('filter-date');
+const filterBtn = document.getElementById('filter-btn');
+const deleteDateInput = document.getElementById('delete-date');
+const deleteBtn = document.getElementById('delete-history-btn');
 
 // Fungsi render card
 function buildCard(room, alert) {
@@ -72,12 +78,20 @@ function buildCard(room, alert) {
   return card;
 }
 
-// Render active & handled alerts
+// Render active & handled alerts + auto-clean
 onValue(ref(db, 'alerts_active'), (snap) => {
   const data = snap.val() || {};
   activeList.innerHTML = '';
   handledList.innerHTML = '';
+  const now = Date.now();
+
   Object.entries(data).forEach(([room, alert]) => {
+    // Auto-clean: hapus card Ditangani lebih dari 24 jam
+    if (alert.status === 'Ditangani' && (now - alert.timestamp) > 24*60*60*1000) {
+      remove(ref(db, `alerts_active/${room}`));
+      return;
+    }
+
     const card = buildCard(room, alert);
     if (alert.status === 'Ditangani') {
       handledList.appendChild(card);
@@ -87,21 +101,53 @@ onValue(ref(db, 'alerts_active'), (snap) => {
   });
 });
 
-// Render history
-onValue(ref(db, 'alerts_history'), (snap) => {
-  const data = snap.val() || {};
-  historyTable.innerHTML = '';
-  Object.entries(data).forEach(([room, events]) => {
-    Object.values(events || {}).forEach((ev) => {
-      const tr = document.createElement('tr');
-      const ts = new Date(ev.timestamp || Date.now()).toLocaleString();
-      tr.innerHTML = `
-        <td>${room.replace('room_', '')}</td>
-        <td>${ev.type}</td>
-        <td>${ev.status}</td>
-        <td>${ts}</td>
-      `;
-      historyTable.appendChild(tr);
+// Render history (default semua)
+function renderHistory(filterDate = null) {
+  onValue(ref(db, 'alerts_history'), (snap) => {
+    const data = snap.val() || {};
+    historyTable.innerHTML = '';
+    Object.entries(data).forEach(([room, events]) => {
+      Object.values(events || {}).forEach((ev) => {
+        const ts = new Date(ev.timestamp || Date.now());
+        const tsDate = ts.toISOString().split('T')[0];
+        if (!filterDate || tsDate === filterDate) {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${room.replace('room_', '')}</td>
+            <td>${ev.type}</td>
+            <td>${ev.status}</td>
+            <td>${ts.toLocaleString()}</td>
+          `;
+          historyTable.appendChild(tr);
+        }
+      });
     });
   });
-});
+}
+renderHistory(); // awal tampil semua
+
+// Filter history
+filterBtn.onclick = () => {
+  const selectedDate = filterDateInput.value;
+  renderHistory(selectedDate || null);
+};
+
+// Hapus history berdasarkan tanggal
+deleteBtn.onclick = () => {
+  const selectedDate = deleteDateInput.value;
+  if (!selectedDate) {
+    alert("Pilih tanggal dulu!");
+    return;
+  }
+  onValue(ref(db, 'alerts_history'), (snap) => {
+    const data = snap.val() || {};
+    Object.entries(data).forEach(([room, events]) => {
+      Object.entries(events || {}).forEach(([evKey, ev]) => {
+        const tsDate = new Date(ev.timestamp).toISOString().split('T')[0];
+        if (tsDate === selectedDate) {
+          remove(ref(db, `alerts_history/${room}/${evKey}`));
+        }
+      });
+    });
+  }, { onlyOnce: true });
+};
