@@ -25,6 +25,8 @@ Dashboard web untuk sistem alert perawat yang terintegrasi dengan Firebase Realt
 ## Setup cepat
 1. Clone repo:
    ```bash
+   git clone https://github.com/ahta05/nurse-alert.git
+   cd nurse-alert
 2. Buat project Firebase baru → ambil config (apiKey, authDomain, databaseURL, dll).
 3. Edit app.js: ganti variabel firebaseConfig dengan milik project kamu.
 4. (Opsional) Aktifkan Authentication dan App Check di Firebase Console.
