@@ -242,15 +242,15 @@ nav button:hover {
     margin: 16px 0;
     display: flex;
     flex-direction: column; /* Ubah ke kolom untuk mobile agar lebih rapi */
-    align-items: stretch; /* Biar elemen memenuhi lebar */
+    align-items: flex-start; /* Ubah ke flex-start agar elemen tidak stretch penuh, lebih proporsional */
     gap: 12px;
   }
   
   .history-actions label {
     font-weight: bold;
     color: #cccccc;
-    margin-bottom: 4px; /* Tambah margin bawah untuk label */
-    margin-left: 0; /* Override margin-left dari HTML inline style */
+    margin: 0; /* Reset semua margin untuk rata kiri penuh */
+    text-align: left; /* Pastikan rata kiri */
   }
   
   .history-actions input[type="date"] {
@@ -260,7 +260,8 @@ nav button:hover {
     background: #1a1a1a;
     color: #ffffff;
     font-size: 1rem;
-    width: 100%; /* Biar input memenuhi lebar */
+    width: 90%; /* Kurangi dari 100% ke 90% untuk proporsi lebih ideal, tidak terlalu penuh horizontal */
+    max-width: 300px; /* Tambah max-width untuk batas maksimal, agar tidak terlalu lebar di layar besar */
   }
   
   .history-actions button {
@@ -273,7 +274,8 @@ nav button:hover {
     font-weight: bold;
     transition: all 0.3s ease;
     box-shadow: 0 2px 4px rgba(0, 255, 255, 0.2);
-    width: 100%; /* Biar tombol memenuhi lebar */
+    width: 90%; /* Kurangi dari 100% ke 90% untuk proporsi lebih ideal */
+    max-width: 300px; /* Tambah max-width untuk konsistensi */
   }
   .history-actions button:hover {
     background: #009999;
