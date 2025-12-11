@@ -1,8 +1,7 @@
-// app.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 import { getDatabase, ref, onValue, push } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
 
-// Ganti dengan config dari Firebase (Langkah 3)
+// Ganti dengan config Firebase kamu
 const firebaseConfig = {
   apiKey: "AIzaSyBqTDry_kn-PJVwfc8Fi9BG457hhI2ObPA",
   authDomain: "nurse-alert-001.firebaseapp.com",
@@ -22,37 +21,63 @@ const historyEl = document.getElementById('history');
 document.getElementById('tab-dashboard').onclick = () => { dashboardEl.style.display = ''; historyEl.style.display = 'none'; };
 document.getElementById('tab-history').onclick = () => { dashboardEl.style.display = 'none'; historyEl.style.display = ''; };
 
-// Render active alerts
 const activeList = document.getElementById('active-list');
-onValue(ref(db, 'alerts_active'), (snap) => {
-  const data = snap.val() || {};
-  activeList.innerHTML = '';
-  Object.entries(data).forEach(([room, alert]) => {
-    const typeClass = alert.type === 'infus' ? 'infus' : alert.type === 'nyeri' ? 'nyeri' : 'bantuan';
-    const card = document.createElement('div');
-    card.className = `card ${typeClass}`;
-    const ts = new Date(alert.timestamp || Date.now()).toLocaleString();
-    card.innerHTML = `
+const handledList = document.getElementById('handled-list');
+const historyTable = document.getElementById('history-table');
+
+// Fungsi render card
+function buildCard(room, alert) {
+  const typeClass = alert.type === 'infus' ? 'infus' : alert.type === 'nyeri' ? 'nyeri' : 'bantuan';
+  const card = document.createElement('div');
+  card.className = `card ${typeClass}`;
+  const ts = new Date(alert.timestamp || Date.now()).toLocaleString();
+
+  card.innerHTML = `
+    <div class="details">
       <div class="row"><div class="label">Ruang</div><div class="colon">:</div><div class="value">${room.replace('room_', '')}</div></div>
       <div class="row"><div class="label">Jenis</div><div class="colon">:</div><div class="value">${alert.type}</div></div>
       <div class="row"><div class="label">Status</div><div class="colon">:</div><div class="value">${alert.status}</div></div>
       <div class="row"><div class="label">Waktu</div><div class="colon">:</div><div class="value">${ts}</div></div>
       <div class="row"><div class="label">Pesan</div><div class="colon">:</div><div class="value">${alert.message || ''}</div></div>
-      <div class="footer"><button class="ack-btn">Tangani</button></div>
-    `;
-    card.querySelector('.ack-btn').onclick = () => {
+    </div>
+    <div class="footer">
+      <button class="ack-btn">${alert.status === 'Ditangani' ? 'Ditangani' : 'Tangani'}</button>
+    </div>
+  `;
+
+  const btn = card.querySelector('.ack-btn');
+  if (alert.status === 'Ditangani') {
+    btn.disabled = true;
+  } else {
+    btn.onclick = () => {
       const payload = { ...alert, status: 'Ditangani', timestamp: Date.now() };
-      // Update active
       fetch(`${firebaseConfig.databaseURL}/alerts_active/${room}.json`, { method: 'PUT', body: JSON.stringify(payload) });
-      // Append ke history
       push(ref(db, `alerts_history/${room}`), payload);
+      btn.textContent = "Ditangani";
+      btn.disabled = true;
+      btn.style.background = "#555";
+      btn.style.color = "#aaa";
     };
-    activeList.appendChild(card);
+  }
+  return card;
+}
+
+// Render active & handled alerts
+onValue(ref(db, 'alerts_active'), (snap) => {
+  const data = snap.val() || {};
+  activeList.innerHTML = '';
+  handledList.innerHTML = '';
+  Object.entries(data).forEach(([room, alert]) => {
+    const card = buildCard(room, alert);
+    if (alert.status === 'Ditangani') {
+      handledList.appendChild(card);
+    } else {
+      activeList.appendChild(card);
+    }
   });
 });
 
 // Render history
-const historyTable = document.getElementById('history-table');
 onValue(ref(db, 'alerts_history'), (snap) => {
   const data = snap.val() || {};
   historyTable.innerHTML = '';
@@ -70,25 +95,3 @@ onValue(ref(db, 'alerts_history'), (snap) => {
     });
   });
 });
-
-// Dev helper: simulasi alert (opsional)
-export function simulateAlert(room = 'room_203', type = 'infus') {
-  const messageMap = {
-    infus: 'Infus pasien hampir habis, segera periksa kondisi cairan.',
-    nyeri: 'Pasien melaporkan keluhan, segera lakukan pemeriksaan.',
-    bantuan: 'Pasien membutuhkan bantuan non-medis.'
-  };
-  const payload = {
-    type,
-    status: 'active',
-    timestamp: Date.now(),
-    message: messageMap[type]
-  };
-  // Update active
-  fetch(`${firebaseConfig.databaseURL}/alerts_active/${room}.json`, { method: 'PUT', body: JSON.stringify(payload) });
-  // Append to history
-  push(ref(db, `alerts_history/${room}`), { ...payload });
-}
-
-// Contoh pemakaian (hapus saat production):
-// simulateAlert('room_203', 'nyeri');
