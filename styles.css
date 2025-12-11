@@ -1,11 +1,48 @@
-body { font-family: system-ui, sans-serif; margin: 24px; }
-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-nav button { margin-right: 8px; }
-h2 { margin: 12px 0; }
-.card { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-bottom: 8px; }
-.infus { border-left: 6px solid #f1c40f; }    /* kuning */
-.nyeri { border-left: 6px solid #e74c3c; }    /* merah */
-.bantuan { border-left: 6px solid #2ecc71; }  /* hijau */
-.small { color: #555; font-size: 12px; }
-table { width: 100%; border-collapse: collapse; }
-th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+body {
+  font-family: 'Orbitron', sans-serif;
+  background: #0d0d0d;
+  color: #e0e0e0;
+  margin: 0;
+  padding: 16px;
+}
+
+h1 {
+  font-size: 2rem;
+  text-align: center;
+  color: #00ffff;
+  margin-bottom: 24px;
+}
+
+.card {
+  border-radius: 12px;
+  padding: 16px;
+  margin: 12px 0;
+  background: #1a1a1a;
+  transition: transform 0.2s;
+}
+.card:hover { transform: scale(1.02); }
+
+.card.infus { border-left: 6px solid #f1c40f; box-shadow: 0 0 12px rgba(241,196,15,0.6); }
+.card.nyeri { border-left: 6px solid #e74c3c; box-shadow: 0 0 12px rgba(231,76,60,0.6); }
+.card.bantuan { border-left: 6px solid #2ecc71; box-shadow: 0 0 12px rgba(46,204,113,0.6); }
+
+.card button {
+  margin-top: 12px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-family: 'Orbitron', sans-serif;
+  cursor: pointer;
+  background: #00ffff;
+  color: #0d0d0d;
+  font-weight: bold;
+}
+.card button:hover {
+  background: #009999;
+  color: #fff;
+}
+
+@media (max-width: 600px) {
+  h1 { font-size: 1.5rem; }
+  .card { font-size: 1rem; }
+}
