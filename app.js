@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-import { getDatabase, ref, onValue, push, remove } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+import { getDatabase, ref, onValue, push, remove, set } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
 // Config Firebase
@@ -68,15 +68,22 @@ function buildCard(room, alert) {
   } else {
     btn.onclick = () => {
       const payload = { ...alert, status: 'Ditangani', timestamp: Date.now() };
-      fetch(`${firebaseConfig.databaseURL}/alerts_active/${room}.json`, { 
-        method: 'PUT', 
-        body: JSON.stringify(payload) 
-      });
-      push(ref(db, `alerts_history/${room}`), payload);
-      btn.textContent = "Ditangani";
-      btn.disabled = true;
-      card.classList.remove('active');
-      card.classList.add('handled');
+
+      // ✅ Update status di alerts_active pakai Firebase SDK
+      set(ref(db, `alerts_active/${room}`), payload)
+        .then(() => {
+          // Simpan ke history
+          push(ref(db, `alerts_history/${room}`), payload);
+
+          // Update tampilan langsung
+          btn.textContent = "Ditangani";
+          btn.disabled = true;
+          card.classList.remove('active');
+          card.classList.add('handled');
+        })
+        .catch(err => {
+          console.error("Gagal update:", err);
+        });
     };
   }
   return card;
