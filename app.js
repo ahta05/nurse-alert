@@ -31,22 +31,12 @@ const activeList = document.getElementById('active-list');
 const handledList = document.getElementById('handled-list');
 const historyTable = document.getElementById('history-table');
 
-// --- Sound alert & volume control ---
-const alertSound = document.getElementById('alert-sound');
-const volumeControl = document.getElementById('volume-control');
-
-// Atur volume dari slider
-if (volumeControl) {
-  volumeControl.addEventListener('input', () => {
-    alertSound.volume = volumeControl.value;
-  });
-}
-
 // Fungsi render card
 function buildCard(room, alert) {
   const typeClass = alert.type === 'infus' ? 'infus' : alert.type === 'nyeri' ? 'nyeri' : 'bantuan';
+  const statusClass = alert.status === 'Ditangani' ? 'handled' : 'active';
   const card = document.createElement('div');
-  card.className = `card ${typeClass}`;
+  card.className = `card ${typeClass} ${statusClass}`;
   const ts = new Date(alert.timestamp || Date.now()).toLocaleString();
 
   card.innerHTML = `
@@ -75,8 +65,8 @@ function buildCard(room, alert) {
       push(ref(db, `alerts_history/${room}`), payload);
       btn.textContent = "Ditangani";
       btn.disabled = true;
-      btn.style.background = "#555";
-      btn.style.color = "#aaa";
+      card.classList.remove('active');
+      card.classList.add('handled');
     };
   }
   return card;
@@ -93,18 +83,6 @@ onValue(ref(db, 'alerts_active'), (snap) => {
       handledList.appendChild(card);
     } else {
       activeList.appendChild(card);
-
-      // --- Glow + bunyi beep untuk alert baru ---
-      if (alert.status === 'active') {
-        if (alertSound) {
-          alertSound.currentTime = 0;
-          alertSound.play();
-        }
-        card.classList.add('active');   // pakai .active sesuai CSS baru
-        setTimeout(() => {
-          card.classList.remove('active');
-        }, 1500);
-      }
     }
   });
 });
