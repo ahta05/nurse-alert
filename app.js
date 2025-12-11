@@ -33,15 +33,15 @@ onValue(ref(db, 'alerts_active'), (snap) => {
     card.className = `card ${typeClass}`;
     const ts = new Date(alert.timestamp || Date.now()).toLocaleString();
     card.innerHTML = `
-      <div class="row"><div class="label">Ruang:</div><div class="value">${room.replace('room_', '')}</div></div>
-      <div class="row"><div class="label">Jenis:</div><div class="value">${alert.type}</div></div>
-      <div class="row"><div class="label">Status:</div><div class="value">${alert.status}</div></div>
-      <div class="row"><div class="label">Waktu:</div><div class="value">${ts}</div></div>
-      <div class="row"><div class="label">Pesan:</div><div class="value">${alert.message || ''}</div></div>
-      <button class="ack-btn">Tangani</button>
+      <div class="row"><div class="label">Ruang</div><div class="colon">:</div><div class="value">${room.replace('room_', '')}</div></div>
+      <div class="row"><div class="label">Jenis</div><div class="colon">:</div><div class="value">${alert.type}</div></div>
+      <div class="row"><div class="label">Status</div><div class="colon">:</div><div class="value">${alert.status}</div></div>
+      <div class="row"><div class="label">Waktu</div><div class="colon">:</div><div class="value">${ts}</div></div>
+      <div class="row"><div class="label">Pesan</div><div class="colon">:</div><div class="value">${alert.message || ''}</div></div>
+      <div class="footer"><button class="ack-btn">Tangani</button></div>
     `;
     card.querySelector('.ack-btn').onclick = () => {
-      const payload = { ...alert, status: 'ack', timestamp: Date.now() };
+      const payload = { ...alert, status: 'Ditangani', timestamp: Date.now() };
       // Update active
       fetch(`${firebaseConfig.databaseURL}/alerts_active/${room}.json`, { method: 'PUT', body: JSON.stringify(payload) });
       // Append ke history
@@ -50,7 +50,6 @@ onValue(ref(db, 'alerts_active'), (snap) => {
     activeList.appendChild(card);
   });
 });
-
 
 // Render history
 const historyTable = document.getElementById('history-table');
