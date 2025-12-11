@@ -47,14 +47,20 @@ nav button:hover {
 
 .card .row {
   display: grid;
-  grid-template-columns: 120px auto;
+  grid-template-columns: 100px 10px auto; /* label | ":" | value */
   margin: 4px 0;
 }
 .card .label { font-weight: bold; }
+.card .colon { text-align: center; }
 .card .value { }
 
-.card button {
+.card .footer {
+  display: flex;
+  justify-content: flex-end; /* tombol di kanan */
   margin-top: 12px;
+}
+
+.card button {
   padding: 8px 16px;
   border: none;
   border-radius: 6px;
