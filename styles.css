@@ -62,9 +62,9 @@ nav button:hover {
   opacity: 0.6;
   box-shadow: none;
 }
-.card.kondisi-infus { border-left: 6px solid #f1c40f; }
-.card.pertolongan-medis { border-left: 6px solid #e74c3c; }
-.card.pertolongan-non-medis { border-left: 6px solid #2ecc71; }
+.card.kondisi.infus { border-left: 6px solid #f1c40f; }
+.card.pertolongan.medis { border-left: 6px solid #e74c3c; }
+.card.pertolongan.non-medis { border-left: 6px solid #2ecc71; }
 
 .details {
   flex: 1;
@@ -251,6 +251,7 @@ nav button:hover {
     color: #cccccc;
     margin: 0; /* Reset semua margin untuk rata kiri penuh */
     text-align: left; /* Pastikan rata kiri */
+    margin-left: 0 !important; /* Override inline style margin-left:20px dari HTML */
   }
   
   .history-actions input[type="date"] {
