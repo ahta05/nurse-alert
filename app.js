@@ -33,7 +33,7 @@ const historyTable = document.getElementById('history-table');
 
 // Fungsi render card
 function buildCard(room, alert) {
-  const typeClass = alert.type === 'infus' ? 'infus' : alert.type === 'nyeri' ? 'nyeri' : 'bantuan';
+  const typeClass = alert.type === 'kondisi infus' ? 'kondisi infus' : alert.type === 'pertolongan medis' ? 'pertolongan medis' : 'pertolongan non-medis';
   const statusClass = alert.status === 'Ditangani' ? 'handled' : 'active';
   const card = document.createElement('div');
   card.className = `card ${typeClass} ${statusClass}`;
