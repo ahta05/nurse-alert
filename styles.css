@@ -161,8 +161,78 @@ nav button:hover {
   .card.active {
     box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
   }
-  nav button {
+  .nav button {
     margin: 0 6px;
     padding: 10px 20px;
+  }
+  
+  .history-actions {
+    margin: 16px 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .history-actions label {
+    font-weight: bold;
+    color: #cccccc;
+  }
+  
+  .history-actions input[type="date"] {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: none;
+    background: #1a1a1a;
+    color: #ffffff;
+    font-size: 0.9rem;
+  }
+  
+  .history-actions button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background: #00ffff;
+    color: #0d0d0d;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 255, 255, 0.2);
+  }
+  .history-actions button:hover {
+    background: #009999;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 255, 255, 0.3);
+  }
+  
+  .history-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+    background: #1a1a1a;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .history-table th,
+  .history-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #333;
+  }
+  
+  .history-table th {
+    background: #222;
+    color: #00ffff;
+    font-weight: bold;
+  }
+  
+  .history-table tr:nth-child(even) {
+    background: #141414;
+  }
+  
+  .history-table tr:hover {
+    background: #222;
   }
 }
