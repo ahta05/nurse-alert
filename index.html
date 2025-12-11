@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nurse Alert Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Nurse Alert</h1>
+    <nav>
+      <button id="tab-dashboard">Dashboard</button>
+      <button id="tab-history">History</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="dashboard">
+      <h2>Alert aktif</h2>
+      <div id="active-list"></div>
+    </section>
+
+    <section id="history" style="display:none;">
+      <h2>Riwayat alert</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Nomor ruang</th>
+            <th>Jenis alert</th>
+            <th>Status</th>
+            <th>Waktu</th>
+          </tr>
+        </thead>
+        <tbody id="history-table"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
