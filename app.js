@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 import { getDatabase, ref, onValue, push } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
 
-// Ganti dengan config Firebase kamu
+// Config Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyBqTDry_kn-PJVwfc8Fi9BG457hhI2ObPA",
   authDomain: "nurse-alert-001.firebaseapp.com",
@@ -18,16 +18,22 @@ const db = getDatabase(app);
 // Tab switching
 const dashboardEl = document.getElementById('dashboard');
 const historyEl = document.getElementById('history');
-document.getElementById('tab-dashboard').onclick = () => { dashboardEl.style.display = ''; historyEl.style.display = 'none'; };
-document.getElementById('tab-history').onclick = () => { dashboardEl.style.display = 'none'; historyEl.style.display = ''; };
+document.getElementById('tab-dashboard').onclick = () => { 
+  dashboardEl.style.display = ''; 
+  historyEl.style.display = 'none'; 
+};
+document.getElementById('tab-history').onclick = () => { 
+  dashboardEl.style.display = 'none'; 
+  historyEl.style.display = ''; 
+};
 
 const activeList = document.getElementById('active-list');
 const handledList = document.getElementById('handled-list');
 const historyTable = document.getElementById('history-table');
 
-// --- Tambahan untuk sound alert & volume control ---
-const alertSound = document.getElementById('alert-sound'); // <audio> di HTML
-const volumeControl = document.getElementById('volume-control'); // slider di HTML
+// --- Sound alert & volume control ---
+const alertSound = document.getElementById('alert-sound');
+const volumeControl = document.getElementById('volume-control');
 
 // Atur volume dari slider
 if (volumeControl) {
@@ -62,7 +68,10 @@ function buildCard(room, alert) {
   } else {
     btn.onclick = () => {
       const payload = { ...alert, status: 'Ditangani', timestamp: Date.now() };
-      fetch(`${firebaseConfig.databaseURL}/alerts_active/${room}.json`, { method: 'PUT', body: JSON.stringify(payload) });
+      fetch(`${firebaseConfig.databaseURL}/alerts_active/${room}.json`, { 
+        method: 'PUT', 
+        body: JSON.stringify(payload) 
+      });
       push(ref(db, `alerts_history/${room}`), payload);
       btn.textContent = "Ditangani";
       btn.disabled = true;
@@ -91,10 +100,10 @@ onValue(ref(db, 'alerts_active'), (snap) => {
           alertSound.currentTime = 0;
           alertSound.play();
         }
-        card.classList.add('glow');
+        card.classList.add('active');   // pakai .active sesuai CSS baru
         setTimeout(() => {
-          card.classList.remove('glow');
-        }, 1500); // glow hilang setelah 1.5 detik
+          card.classList.remove('active');
+        }, 1500);
       }
     }
   });
