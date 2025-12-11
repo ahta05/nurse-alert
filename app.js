@@ -33,13 +33,13 @@ onValue(ref(db, 'alerts_active'), (snap) => {
     card.className = `card ${typeClass}`;
     const ts = new Date(alert.timestamp || Date.now()).toLocaleString();
     card.innerHTML = `
-      <div><strong>Ruang:</strong> ${room.replace('room_', '')}</div>
-      <div><strong>Jenis:</strong> ${alert.type}</div>
-      <div class="small"><strong>Status:</strong> ${alert.status} • <strong>Waktu:</strong> ${ts}</div>
-      <div class="small">${alert.message || ''}</div>
+      <div class="row"><div class="label">Ruang:</div><div class="value">${room.replace('room_', '')}</div></div>
+      <div class="row"><div class="label">Jenis:</div><div class="value">${alert.type}</div></div>
+      <div class="row"><div class="label">Status:</div><div class="value">${alert.status}</div></div>
+      <div class="row"><div class="label">Waktu:</div><div class="value">${ts}</div></div>
+      <div class="row"><div class="label">Pesan:</div><div class="value">${alert.message || ''}</div></div>
       <button class="ack-btn">Tangani</button>
     `;
-    // Tambah event listener untuk tombol Tangani
     card.querySelector('.ack-btn').onclick = () => {
       const payload = { ...alert, status: 'ack', timestamp: Date.now() };
       // Update active
