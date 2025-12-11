@@ -3,41 +3,41 @@ body {
   background: #0d0d0d;
   color: #ffffff;
   margin: 0;
-  padding: 20px; /* Sedikit ditingkatkan untuk proporsi yang lebih baik */
-  line-height: 1.5; /* Menambah readability dengan line-height */
+  padding: 20px;
+  line-height: 1.5;
 }
 
 h1 {
-  font-size: 3rem; /* Ditingkatkan untuk ukuran yang lebih besar dan menonjol */
+  font-size: 3rem;
   text-align: center;
-  color: #ffffff; /* Diubah ke putih untuk kontras yang lebih baik */
-  margin-bottom: 32px; /* Ditingkatkan untuk spacing yang lebih proporsional */
-  font-weight: 700; /* Lebih bold untuk gaya yang lebih kuat tanpa norak */
-  text-transform: uppercase; /* Tambah sedikit flair tanpa berlebihan */
-  letter-spacing: 2px; /* Spacing huruf untuk kesan modern */
+  color: #ffffff;
+  margin-bottom: 32px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 nav {
   display: flex;
   justify-content: center;
-  margin-bottom: 24px; /* Ditingkatkan untuk pemisahan yang lebih jelas */
+  margin-bottom: 24px;
 }
 nav button {
-  margin: 0 12px; /* Ditingkatkan untuk spacing antar tombol */
-  padding: 12px 24px; /* Ditingkatkan untuk ukuran yang lebih nyaman */
+  margin: 0 12px;
+  padding: 12px 24px;
   border: none;
-  border-radius: 8px; /* Sedikit ditingkatkan untuk kesan lebih halus */
+  border-radius: 8px;
   background: #00ffff;
   color: #0d0d0d;
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.3s ease; /* Transisi yang lebih smooth */
-  box-shadow: 0 2px 4px rgba(0, 255, 255, 0.2); /* Tambah shadow ringan untuk kedalaman */
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 255, 255, 0.2);
 }
 nav button:hover {
   background: #009999;
   color: #fff;
-  transform: translateY(-2px); /* Efek hover halus tanpa berlebihan */
+  transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 255, 255, 0.3);
 }
 
@@ -45,19 +45,22 @@ nav button:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px; /* Ditingkatkan untuk ruang yang lebih lega */
-  margin: 16px 0; /* Ditingkatkan untuk proporsi vertikal */
+  padding: 20px;
+  margin: 16px 0;
   background: #1a1a1a;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Tambah shadow untuk efek modern dan kedalaman */
-  transition: box-shadow 0.3s ease; /* Transisi pada hover untuk interaktivitas halus */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: box-shadow 0.3s ease;
 }
 .card:hover {
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4); /* Efek hover pada card */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
 }
-.card.active { /* Tambah class .active untuk glow pada card yang aktif */
+.card.active { /* Glow permanen untuk alert aktif */
   box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
-  transition: box-shadow 0.5s ease-in-out;
+}
+.card.handled { /* Redup untuk alert ditangani */
+  opacity: 0.6;
+  box-shadow: none;
 }
 .card.infus { border-left: 6px solid #f1c40f; }
 .card.nyeri { border-left: 6px solid #e74c3c; }
@@ -67,29 +70,29 @@ nav button:hover {
   flex: 1;
 }
 .details .row {
-  display: flex; /* Ganti grid ke flex untuk fleksibilitas dan readability yang lebih baik */
+  display: flex;
   align-items: center;
-  margin: 6px 0; /* Ditingkatkan untuk spacing */
+  margin: 6px 0;
 }
 .details .label {
   font-weight: bold;
-  min-width: 120px; /* Tetap lebar untuk konsistensi */
-  color: #cccccc; /* Warna abu-abu muda untuk kontras yang baik tanpa mengubah tema */
+  min-width: 120px;
+  color: #cccccc;
 }
 .details .colon {
-  margin: 0 8px; /* Spacing untuk colon */
-  color: #888888; /* Warna netral untuk clarity */
+  margin: 0 8px;
+  color: #888888;
 }
 .details .value {
-  flex: 1; /* Biarkan value mengambil sisa ruang */
+  flex: 1;
 }
 
 .footer {
-  margin-left: 20px; /* Disesuaikan dengan padding card */
+  margin-left: 20px;
 }
 
 .card button {
-  padding: 10px 18px; /* Ditingkatkan sedikit untuk ukuran yang lebih proporsional */
+  padding: 10px 18px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -112,107 +115,40 @@ nav button:hover {
   box-shadow: none;
 }
 
-/* Tambah kontrol volume di kanan atas */
-.volume-control {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  display: flex;
-  align-items: center;
-  z-index: 1000;
-}
-.volume-icon {
-  background: none;
-  border: none;
-  color: #00ffff;
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 50%;
-  transition: background 0.3s ease;
-}
-.volume-icon:hover {
-  background: rgba(0, 255, 255, 0.1);
-}
-.volume-slider {
-  width: 0; /* Hidden by default */
-  opacity: 0;
-  transition: width 0.3s ease, opacity 0.3s ease;
-  margin-left: 10px;
-  -webkit-appearance: none; /* Custom slider */
-  appearance: none;
-  height: 6px;
-  background: #555;
-  border-radius: 3px;
-  outline: none;
-}
-.volume-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 16px;
-  height: 16px;
-  background: #00ffff;
-  border-radius: 50%;
-  cursor: pointer;
-}
-.volume-slider::-moz-range-thumb {
-  width: 16px;
-  height: 16px;
-  background: #00ffff;
-  border-radius: 50%;
-  cursor: pointer;
-  border: none;
-}
-.volume-control:hover .volume-slider {
-  width: 100px; /* Muncul saat hover pada kontrol volume */
-  opacity: 1;
-}
-
 @media (max-width: 600px) {
   body {
-    padding: 16px; /* Sesuaikan untuk mobile */
+    padding: 16px;
   }
   h1 {
-    font-size: 2.5rem; /* Disesuaikan untuk mobile, tetap lebih besar */
-    letter-spacing: 1px; /* Kurangi untuk mobile */
+    font-size: 2.5rem;
+    letter-spacing: 1px;
   }
   .card {
     font-size: 1rem;
     flex-direction: column;
     align-items: flex-start;
-    padding: 16px; /* Kurangi untuk mobile */
+    padding: 16px;
   }
   .details .row {
-    flex-direction: column; /* Untuk mobile, buat vertikal agar rapi */
+    flex-direction: column;
     align-items: flex-start;
   }
   .details .label {
-    min-width: auto; /* Hapus min-width untuk fleksibilitas */
-    margin-bottom: 4px; /* Tambah margin bawah untuk spacing */
+    min-width: auto;
+    margin-bottom: 4px;
   }
   .details .colon {
-    display: none; /* Sembunyikan colon di mobile untuk kesederhanaan */
+    display: none;
   }
   .footer {
     margin-left: 0;
-    margin-top: 16px; /* Disesuaikan untuk mobile */
+    margin-top: 16px;
   }
-  .card.active { /* Glow untuk card active di mobile */
+  .card.active {
     box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
-    transition: box-shadow 0.5s ease-in-out;
   }
   nav button {
-    margin: 0 6px; /* Kurangi margin untuk mobile */
+    margin: 0 6px;
     padding: 10px 20px;
-  }
-  .volume-control {
-    top: 16px;
-    right: 16px;
-  }
-  .volume-slider {
-    width: 80px; /* Lebih kecil di mobile */
-  }
-  .volume-control:hover .volume-slider {
-    width: 80px; /* Sesuaikan untuk mobile */
   }
 }
