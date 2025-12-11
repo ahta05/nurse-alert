@@ -121,6 +121,7 @@ nav button:hover {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-wrap: wrap; /* Biar wrap jika perlu di desktop */
 }
 
 .history-actions label {
@@ -249,6 +250,7 @@ nav button:hover {
     font-weight: bold;
     color: #cccccc;
     margin-bottom: 4px; /* Tambah margin bawah untuk label */
+    margin-left: 0; /* Override margin-left dari HTML inline style */
   }
   
   .history-actions input[type="date"] {
