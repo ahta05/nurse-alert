@@ -62,9 +62,9 @@ nav button:hover {
   opacity: 0.6;
   box-shadow: none;
 }
-.card.infus { border-left: 6px solid #f1c40f; }
-.card.nyeri { border-left: 6px solid #e74c3c; }
-.card.bantuan { border-left: 6px solid #2ecc71; }
+.card.kondis infus { border-left: 6px solid #f1c40f; }
+.card.pertolongan medis { border-left: 6px solid #e74c3c; }
+.card.pertolongan non-medis { border-left: 6px solid #2ecc71; }
 
 .details {
   flex: 1;
