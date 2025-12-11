@@ -37,7 +37,16 @@ onValue(ref(db, 'alerts_active'), (snap) => {
       <div><strong>Jenis:</strong> ${alert.type}</div>
       <div class="small"><strong>Status:</strong> ${alert.status} • <strong>Waktu:</strong> ${ts}</div>
       <div class="small">${alert.message || ''}</div>
+      <button class="ack-btn">Tangani</button>
     `;
+    // Tambah event listener untuk tombol Tangani
+    card.querySelector('.ack-btn').onclick = () => {
+      const payload = { ...alert, status: 'ack', timestamp: Date.now() };
+      // Update active
+      fetch(`${firebaseConfig.databaseURL}/alerts_active/${room}.json`, { method: 'PUT', body: JSON.stringify(payload) });
+      // Append ke history
+      push(ref(db, `alerts_history/${room}`), payload);
+    };
     activeList.appendChild(card);
   });
 });
