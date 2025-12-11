@@ -102,6 +102,8 @@ onValue(ref(db, 'alerts_active'), (snap) => {
 });
 
 // Render history (default semua)
+// ... (config & tab switching tetap sama)
+
 function renderHistory(filterDate = null) {
   onValue(ref(db, 'alerts_history'), (snap) => {
     const data = snap.val() || {};
@@ -109,7 +111,7 @@ function renderHistory(filterDate = null) {
     Object.entries(data).forEach(([room, events]) => {
       Object.values(events || {}).forEach((ev) => {
         const ts = new Date(ev.timestamp || Date.now());
-        const tsDate = ts.toISOString().split('T')[0];
+        const tsDate = ts.toLocaleDateString('sv-SE'); // pakai lokal YYYY-MM-DD
         if (!filterDate || tsDate === filterDate) {
           const tr = document.createElement('tr');
           tr.innerHTML = `
@@ -143,7 +145,8 @@ deleteBtn.onclick = () => {
     const data = snap.val() || {};
     Object.entries(data).forEach(([room, events]) => {
       Object.entries(events || {}).forEach(([evKey, ev]) => {
-        const tsDate = new Date(ev.timestamp).toISOString().split('T')[0];
+        if (!ev.timestamp) return;
+        const tsDate = new Date(ev.timestamp).toLocaleDateString('sv-SE'); // pakai lokal
         if (tsDate === selectedDate) {
           remove(ref(db, `alerts_history/${room}/${evKey}`));
         }
