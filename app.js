@@ -1,5 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 import { getDatabase, ref, onValue, push, remove } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
 // Config Firebase
 const firebaseConfig = {
@@ -14,6 +15,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+const auth = getAuth(app);
 
 // Tab switching
 const dashboardEl = document.getElementById('dashboard');
@@ -39,7 +41,9 @@ const deleteBtn = document.getElementById('delete-history-btn');
 
 // Fungsi render card
 function buildCard(room, alert) {
-  const typeClass = alert.type === 'kondisi infus' ? 'kondisi infus' : alert.type === 'pertolongan medis' ? 'pertolongan medis' : 'pertolongan non-medis';
+  const typeClass = alert.type === 'kondisi infus' ? 'kondisi infus' : 
+                    alert.type === 'pertolongan medis' ? 'pertolongan medis' : 
+                    'pertolongan non-medis';
   const statusClass = alert.status === 'Ditangani' ? 'handled' : 'active';
   const card = document.createElement('div');
   card.className = `card ${typeClass} ${statusClass}`;
@@ -78,32 +82,7 @@ function buildCard(room, alert) {
   return card;
 }
 
-// Render active & handled alerts + auto-clean
-onValue(ref(db, 'alerts_active'), (snap) => {
-  const data = snap.val() || {};
-  activeList.innerHTML = '';
-  handledList.innerHTML = '';
-  const now = Date.now();
-
-  Object.entries(data).forEach(([room, alert]) => {
-    // Auto-clean: hapus card Ditangani lebih dari 24 jam
-    if (alert.status === 'Ditangani' && (now - alert.timestamp) > 24*60*60*1000) {
-      remove(ref(db, `alerts_active/${room}`));
-      return;
-    }
-
-    const card = buildCard(room, alert);
-    if (alert.status === 'Ditangani') {
-      handledList.appendChild(card);
-    } else {
-      activeList.appendChild(card);
-    }
-  });
-});
-
-// Render history (default semua)
-// ... (config & tab switching tetap sama)
-
+// Render history
 function renderHistory(filterDate = null) {
   onValue(ref(db, 'alerts_history'), (snap) => {
     const data = snap.val() || {};
@@ -111,7 +90,7 @@ function renderHistory(filterDate = null) {
     Object.entries(data).forEach(([room, events]) => {
       Object.values(events || {}).forEach((ev) => {
         const ts = new Date(ev.timestamp || Date.now());
-        const tsDate = ts.toLocaleDateString('sv-SE'); // pakai lokal YYYY-MM-DD
+        const tsDate = ts.toLocaleDateString('sv-SE'); // format YYYY-MM-DD
         if (!filterDate || tsDate === filterDate) {
           const tr = document.createElement('tr');
           tr.innerHTML = `
@@ -126,7 +105,6 @@ function renderHistory(filterDate = null) {
     });
   });
 }
-renderHistory(); // awal tampil semua
 
 // Filter history
 filterBtn.onclick = () => {
@@ -146,7 +124,7 @@ deleteBtn.onclick = () => {
     Object.entries(data).forEach(([room, events]) => {
       Object.entries(events || {}).forEach(([evKey, ev]) => {
         if (!ev.timestamp) return;
-        const tsDate = new Date(ev.timestamp).toLocaleDateString('sv-SE'); // pakai lokal
+        const tsDate = new Date(ev.timestamp).toLocaleDateString('sv-SE');
         if (tsDate === selectedDate) {
           remove(ref(db, `alerts_history/${room}/${evKey}`));
         }
@@ -154,3 +132,38 @@ deleteBtn.onclick = () => {
     });
   }, { onlyOnce: true });
 };
+
+// 🔒 Cek login sebelum pasang listener
+onAuthStateChanged(auth, user => {
+  if (user) {
+    console.log("User login:", user.email);
+
+    // Render active & handled alerts + auto-clean
+    onValue(ref(db, 'alerts_active'), (snap) => {
+      const data = snap.val() || {};
+      activeList.innerHTML = '';
+      handledList.innerHTML = '';
+      const now = Date.now();
+
+      Object.entries(data).forEach(([room, alert]) => {
+        if (alert.status === 'Ditangani' && (now - alert.timestamp) > 24*60*60*1000) {
+          remove(ref(db, `alerts_active/${room}`));
+          return;
+        }
+        const card = buildCard(room, alert);
+        if (alert.status === 'Ditangani') {
+          handledList.appendChild(card);
+        } else {
+          activeList.appendChild(card);
+        }
+      });
+    });
+
+    // Render history awal
+    renderHistory();
+
+  } else {
+    // Kalau belum login, redirect ke halaman login
+    window.location.href = "index.html";
+  }
+});
