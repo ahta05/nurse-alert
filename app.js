@@ -51,6 +51,7 @@ onValue(ref(db, 'alerts_active'), (snap) => {
   });
 });
 
+
 // Render history
 const historyTable = document.getElementById('history-table');
 onValue(ref(db, 'alerts_history'), (snap) => {
