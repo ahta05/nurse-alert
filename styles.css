@@ -3,45 +3,55 @@ body {
   background: #0d0d0d;
   color: #ffffff;
   margin: 0;
-  padding: 16px;
+  padding: 20px; /* Sedikit ditingkatkan untuk proporsi yang lebih baik */
+  line-height: 1.5; /* Menambah readability dengan line-height */
 }
 
 h1 {
-  font-size: 2rem;
+  font-size: 2.2rem; /* Sedikit ditingkatkan untuk kesan lebih modern */
   text-align: center;
   color: #00ffff;
-  margin-bottom: 24px;
+  margin-bottom: 32px; /* Ditingkatkan untuk spacing yang lebih proporsional */
+  font-weight: 300; /* Lebih ringan untuk kesan elegan */
 }
 
 nav {
   display: flex;
   justify-content: center;
-  margin-bottom: 16px;
+  margin-bottom: 24px; /* Ditingkatkan untuk pemisahan yang lebih jelas */
 }
 nav button {
-  margin: 0 8px;
-  padding: 10px 20px;
+  margin: 0 12px; /* Ditingkatkan untuk spacing antar tombol */
+  padding: 12px 24px; /* Ditingkatkan untuk ukuran yang lebih nyaman */
   border: none;
-  border-radius: 6px;
+  border-radius: 8px; /* Sedikit ditingkatkan untuk kesan lebih halus */
   background: #00ffff;
   color: #0d0d0d;
   font-weight: bold;
   cursor: pointer;
-  transition: 0.2s;
+  transition: all 0.3s ease; /* Transisi yang lebih smooth */
+  box-shadow: 0 2px 4px rgba(0, 255, 255, 0.2); /* Tambah shadow ringan untuk kedalaman */
 }
 nav button:hover {
   background: #009999;
   color: #fff;
+  transform: translateY(-2px); /* Efek hover halus tanpa berlebihan */
+  box-shadow: 0 4px 8px rgba(0, 255, 255, 0.3);
 }
 
 .card {
   display: flex;
   justify-content: space-between;
-  align-items: center; /* tombol di tengah vertikal */
-  padding: 16px;
-  margin: 12px 0;
+  align-items: center;
+  padding: 20px; /* Ditingkatkan untuk ruang yang lebih lega */
+  margin: 16px 0; /* Ditingkatkan untuk proporsi vertikal */
   background: #1a1a1a;
   border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Tambah shadow untuk efek modern dan kedalaman */
+  transition: box-shadow 0.3s ease; /* Transisi pada hover untuk interaktivitas halus */
+}
+.card:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4); /* Efek hover pada card */
 }
 .card.infus { border-left: 6px solid #f1c40f; }
 .card.nyeri { border-left: 6px solid #e74c3c; }
@@ -51,39 +61,70 @@ nav button:hover {
   flex: 1;
 }
 .details .row {
-  display: grid;
-  grid-template-columns: 120px 10px auto; /* label | ":" | value */
-  margin: 4px 0;
+  display: flex; /* Ganti grid ke flex untuk fleksibilitas dan readability yang lebih baik */
+  align-items: center;
+  margin: 6px 0; /* Ditingkatkan untuk spacing */
 }
-.details .label { font-weight: bold; }
-.details .colon { text-align: center; }
-.details .value { }
+.details .label {
+  font-weight: bold;
+  min-width: 120px; /* Tetap lebar untuk konsistensi */
+  color: #cccccc; /* Warna abu-abu muda untuk kontras yang baik tanpa mengubah tema */
+}
+.details .colon {
+  margin: 0 8px; /* Spacing untuk colon */
+  color: #888888; /* Warna netral untuk clarity */
+}
+.details .value {
+  flex: 1; /* Biarkan value mengambil sisa ruang */
+}
 
 .footer {
-  margin-left: 16px;
+  margin-left: 20px; /* Disesuaikan dengan padding card */
 }
 
 .card button {
-  padding: 8px 16px;
+  padding: 10px 18px; /* Ditingkatkan sedikit untuk ukuran yang lebih proporsional */
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   background: #00ffff;
   color: #0d0d0d;
   font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 255, 255, 0.2);
 }
 .card button:hover {
   background: #009999;
   color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 255, 255, 0.3);
 }
 .card button:disabled {
   background: #555;
   color: #aaa;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
 @media (max-width: 600px) {
-  h1 { font-size: 1.5rem; }
-  .card { font-size: 1rem; flex-direction: column; align-items: flex-start; }
-  .footer { margin-left: 0; margin-top: 12px; }
+  body {
+    padding: 16px; /* Sesuaikan untuk mobile */
+  }
+  h1 {
+    font-size: 1.8rem; /* Disesuaikan untuk mobile */
+  }
+  .card {
+    font-size: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px; /* Kurangi untuk mobile */
+  }
+  .footer {
+    margin-left: 0;
+    margin-top: 16px; /* Disesuaikan untuk mobile */
+  }
+  nav button {
+    margin: 0 6px; /* Kurangi margin untuk mobile */
+    padding: 10px 20px;
+  }
 }
