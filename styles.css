@@ -1,0 +1,11 @@
+body { font-family: system-ui, sans-serif; margin: 24px; }
+header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+nav button { margin-right: 8px; }
+h2 { margin: 12px 0; }
+.card { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-bottom: 8px; }
+.infus { border-left: 6px solid #f1c40f; }    /* kuning */
+.nyeri { border-left: 6px solid #e74c3c; }    /* merah */
+.bantuan { border-left: 6px solid #2ecc71; }  /* hijau */
+.small { color: #555; font-size: 12px; }
+table { width: 100%; border-collapse: collapse; }
+th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
