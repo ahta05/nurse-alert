@@ -25,6 +25,17 @@ const activeList = document.getElementById('active-list');
 const handledList = document.getElementById('handled-list');
 const historyTable = document.getElementById('history-table');
 
+// --- Tambahan untuk sound alert & volume control ---
+const alertSound = document.getElementById('alert-sound'); // <audio> di HTML
+const volumeControl = document.getElementById('volume-control'); // slider di HTML
+
+// Atur volume dari slider
+if (volumeControl) {
+  volumeControl.addEventListener('input', () => {
+    alertSound.volume = volumeControl.value;
+  });
+}
+
 // Fungsi render card
 function buildCard(room, alert) {
   const typeClass = alert.type === 'infus' ? 'infus' : alert.type === 'nyeri' ? 'nyeri' : 'bantuan';
@@ -73,6 +84,18 @@ onValue(ref(db, 'alerts_active'), (snap) => {
       handledList.appendChild(card);
     } else {
       activeList.appendChild(card);
+
+      // --- Glow + bunyi beep untuk alert baru ---
+      if (alert.status === 'active') {
+        if (alertSound) {
+          alertSound.currentTime = 0;
+          alertSound.play();
+        }
+        card.classList.add('glow');
+        setTimeout(() => {
+          card.classList.remove('glow');
+        }, 1500); // glow hilang setelah 1.5 detik
+      }
     }
   });
 });
