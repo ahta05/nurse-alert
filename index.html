@@ -4,112 +4,116 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nurse Alert Login</title>
-  <!-- Favicon resmi -->
+
   <link rel="icon" href="favicon.png">
-  <!-- Tailwind CSS untuk styling modern -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Font Awesome untuk ikon (tetap ada jika perlu di tempat lain) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <!-- Google Fonts untuk font keren -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
   <style>
-    /* Custom CSS untuk tema dark cyan dengan efek glow yang lebih subtle */
     body {
-      background: #000000; /* Hitam solid untuk dark mode */
+      background: #000000;
       font-family: 'Poppins', sans-serif;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      color: #ffffff; /* Teks putih default */
+      color: #ffffff;
     }
+
     .login-container {
-      background: rgba(0, 0, 0, 0.9); /* Hitam transparan */
+      background: rgba(0, 0, 0, 0.9);
       backdrop-filter: blur(10px);
-      border: 2px solid #00FFFF; /* Border cyan */
+      border: 2px solid #00FFFF;
       border-radius: 15px;
-      box-shadow: 0 0 10px #00FFFF, 0 0 20px #00FFFF; /* Glow lebih subtle */
+      box-shadow: 0 0 10px #00FFFF, 0 0 20px #00FFFF;
       padding: 2rem;
       width: 100%;
       max-width: 400px;
       animation: fadeIn 0.8s ease-in;
     }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(-20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
     .input-group {
       position: relative;
       margin-bottom: 1.5rem;
     }
+
     .input-group i {
       position: absolute;
       left: 10px;
       top: 50%;
       transform: translateY(-50%);
-      color: #00FFFF; /* Ikon cyan */
+      color: #00FFFF;
     }
+
     .input-group input {
       padding-left: 2.5rem;
-      background: rgba(255, 255, 255, 0.1); /* Input semi-transparan */
+      background: rgba(255, 255, 255, 0.1);
       border: 1px solid #00FFFF;
       color: #ffffff;
     }
+
     .input-group input:focus {
-      box-shadow: 0 0 5px #00FFFF; /* Glow lebih subtle pada focus */
+      box-shadow: 0 0 5px #00FFFF;
     }
+
     .btn-login {
-      background: #00FFFF; /* Button cyan */
-      color: #000000; /* Teks hitam untuk kontras */
-      box-shadow: 0 0 10px #00FFFF; /* Glow lebih subtle */
+      background: #00FFFF;
+      color: #000000;
+      box-shadow: 0 0 10px #00FFFF;
       transition: all 0.3s ease;
     }
+
     .btn-login:hover {
-      box-shadow: 0 0 15px #00FFFF, 0 0 25px #00FFFF; /* Glow hover lebih halus */
+      box-shadow: 0 0 15px #00FFFF, 0 0 25px #00FFFF;
       transform: translateY(-2px);
     }
+
     .error-msg {
-      color: #ff6b6b; /* Merah muda untuk error */
+      color: #ff6b6b;
       font-size: 0.875rem;
       margin-top: 1rem;
       text-align: center;
     }
+
     .loading {
       display: none;
-      color: #00FFFF; /* Loading cyan */
+      color: #00FFFF;
       font-size: 0.875rem;
       margin-top: 1rem;
       text-align: center;
     }
-    /* Header dengan glow lebih subtle */
-    header h1 {
-      color: #00FFFF;
-      text-shadow: 0 0 5px #00FFFF, 0 0 10px #00FFFF; /* Glow lebih halus */
-    }
-    header p {
-      color: #ffffff;
-    }
-    footer {
-      color: #00FFFF;
-      text-shadow: 0 0 3px #00FFFF; /* Glow footer lebih subtle */
+
+    /* Hilangkan glow teks */
+    header h1,
+    header p,
+    footer,
+    .login-container h2 {
+      text-shadow: none !important;
     }
   </style>
 </head>
+
 <body>
-  <!-- Header Sederhana -->
+
   <header class="text-center mb-8">
     <h1 class="text-4xl font-bold drop-shadow-lg flex items-center justify-center">
       <img src="favicon.png" alt="Nurse Alert Icon" class="inline-block w-10 h-10 mr-2"> Nurse Alert
     </h1>
-    <p class="mt-2">Login untuk akses dashboard informasi alert</p>
+    <p class="mt-2">Login untuk akses dashboard perawatan kesehatan</p>
   </header>
 
-  <!-- Login Container -->
   <div class="login-container">
-    <h2 class="text-2xl font-semibold text-center text-cyan-400 mb-6" style="text-shadow: 0 0 5px #00FFFF;">
+    <h2 class="text-2xl font-semibold text-center text-cyan-400 mb-6">
       <i class="fas fa-sign-in-alt"></i> Masuk Akun
     </h2>
+
     <form id="login-form" class="space-y-4">
       <div class="input-group">
         <i class="fas fa-envelope"></i>
@@ -129,24 +133,21 @@
         <i class="fas fa-arrow-right mr-2"></i> Login
       </button>
     </form>
+
     <div id="login-error" class="error-msg"></div>
     <div id="loading" class="loading">
       <i class="fas fa-spinner fa-spin"></i> Memproses login...
     </div>
   </div>
 
-  <!-- Footer Sederhana -->
   <footer class="text-center mt-8">
-    <p>&copy; 2025 Nurse Alert.</p>
+    <p>&copy; 2023 Nurse Alert. Dibuat dengan ❤️ untuk perawatan kesehatan.</p>
   </footer>
 
-  <!-- Script Login (sama seperti sebelumnya) -->
   <script type="module">
-    // Import Firebase (asumsikan ini di login.js kamu)
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
-    // Config Firebase (sama seperti sebelumnya)
     const firebaseConfig = {
       apiKey: "AIzaSyBqTDry_kn-PJVwfc8Fi9BG457hhI2ObPA",
       authDomain: "nurse-alert-001.firebaseapp.com",
@@ -160,7 +161,6 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    // Elemen DOM
     const loginForm = document.getElementById('login-form');
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
@@ -168,16 +168,17 @@
     const loadingDiv = document.getElementById('loading');
     const submitBtn = loginForm.querySelector('button[type="submit"]');
 
-    // Fungsi untuk show/hide loading
     function showLoading(show) {
       loadingDiv.style.display = show ? 'block' : 'none';
       submitBtn.disabled = show;
-      submitBtn.innerHTML = show ? '<i class="fas fa-spinner fa-spin mr-2"></i> Logging in...' : '<i class="fas fa-arrow-right mr-2"></i> Login';
+      submitBtn.innerHTML = show
+        ? '<i class="fas fa-spinner fa-spin mr-2"></i> Logging in...'
+        : '<i class="fas fa-arrow-right mr-2"></i> Login';
     }
 
-    // Event listener untuk form
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+
       const email = emailInput.value.trim();
       const password = passwordInput.value.trim();
 
@@ -191,17 +192,17 @@
 
       try {
         await signInWithEmailAndPassword(auth, email, password);
-        // Redirect ke dashboard setelah login sukses
-        window.location.href = "dashboard.html"; // Ganti sesuai file dashboard kamu
+        window.location.href = "dashboard.html";
       } catch (error) {
-        console.error('Login error:', error);
-        errorDiv.textContent = 'Login gagal: ' + (error.message.includes('user-not-found') ? 'Email tidak ditemukan.' : 
-                                                 error.message.includes('wrong-password') ? 'Password salah.' : 
-                                                 'Terjadi kesalahan. Coba lagi.');
+        errorDiv.textContent = 'Login gagal: ' +
+          (error.message.includes('user-not-found') ? 'Email tidak ditemukan.'
+          : error.message.includes('wrong-password') ? 'Password salah.'
+          : 'Terjadi kesalahan. Coba lagi.');
       } finally {
         showLoading(false);
       }
     });
   </script>
+
 </body>
 </html>
