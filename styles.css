@@ -35,29 +35,32 @@ nav button:hover {
 }
 
 .card {
-  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* tombol di tengah vertikal */
   padding: 16px;
   margin: 12px 0;
   background: #1a1a1a;
-  box-shadow: 0 0 12px rgba(0,255,255,0.3);
+  border-radius: 12px;
 }
 .card.infus { border-left: 6px solid #f1c40f; }
 .card.nyeri { border-left: 6px solid #e74c3c; }
 .card.bantuan { border-left: 6px solid #2ecc71; }
 
-.card .row {
+.details {
+  flex: 1;
+}
+.details .row {
   display: grid;
-  grid-template-columns: 100px 10px auto; /* label | ":" | value */
+  grid-template-columns: 120px 10px auto; /* label | ":" | value */
   margin: 4px 0;
 }
-.card .label { font-weight: bold; }
-.card .colon { text-align: center; }
-.card .value { }
+.details .label { font-weight: bold; }
+.details .colon { text-align: center; }
+.details .value { }
 
-.card .footer {
-  display: flex;
-  justify-content: flex-end; /* tombol di kanan */
-  margin-top: 12px;
+.footer {
+  margin-left: 16px;
 }
 
 .card button {
@@ -73,8 +76,14 @@ nav button:hover {
   background: #009999;
   color: #fff;
 }
+.card button:disabled {
+  background: #555;
+  color: #aaa;
+  cursor: not-allowed;
+}
 
 @media (max-width: 600px) {
   h1 { font-size: 1.5rem; }
-  .card { font-size: 1rem; }
+  .card { font-size: 1rem; flex-direction: column; align-items: flex-start; }
+  .footer { margin-left: 0; margin-top: 12px; }
 }
